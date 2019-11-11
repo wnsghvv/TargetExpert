@@ -1,0 +1,74 @@
+1. virtualBox에 우분투를 설치해줍니다.
+2. 툴 체인을 위해서 아두이노 설치합니다.
+3. 아두이노 설치
+4. 설치뒤 CLION 설치 
+5. 아두이노 안에 있는 툴 체인 사용 -> 툴체인 링크 ->TESUIT를 넣는다.
+6. 새로운 프로젝트를 만든다.
+7. CLION 열고 터미널을 이용하여 프로젝트의 디렉토리 들어간다. 
+ sudo chmod a+re /dev/ttyACM0 의 해당폴더 들어가 
+ ln -s ../../TESuit/
+ ln -s ../../TargetExpert/ 입력
+ 
+8. 그다음 CLION에 아래의 코드입력한다.
+
+#include "Common.inc.h"
+#include<util/delay.h>
+
+bool_Blink = false;
+
+void  Init(){
+  set_Output_B5;
+}
+void Do_Process(){
+  if(_Blink)
+    _Blink = false;
+  else(_Blink)
+    _Blink = true;
+   PORTB_5W(_Blink);
+   _delay_ms(100);
+}
+int main(){
+  Init();
+  while(1){
+    Do_Process();
+  }
+  return 0;
+}
+
+
+CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
+
+include(TESuit/TEInclude.cmake)
+
+Set_Target(armega328p)
+Set_TargetFreq(16000000)
+Set_JointInterface(arduino)
+Set_JointPort(/dev/ttyACM0)
+SET_Project(TESuit_Test)
+
+Init_TE()
+Prebuild_TE()
+
+project(${Project_Name} ${Language})
+add_executable(${Project_Name} main.c ${Src_Files})
+
+Postbuild_TE()
+
+9. 아두이노 연결 및 체크 실행
+
+
+마지막 말씀
+
+소스만 있으면 타겟익스펄트 소스만 있으면 지금은 어떤상태냐하면 윈도우는 지원 리눅스 는 지원됨 clion 안서도됨  비주얼스튜디오 사용해도 됨 cmake 플러그인 사용해서  프로젝트 만들때는 
+
+수정  자동화 시키는 스크립트 생김 그것만 하면 딱히 링크걸필요가 없다 설치만 해주면 땡이다.
+
+툴 체인을 격리를 로컬로 할 예정 디버그가 설치되어있어야함.... 
+
+clion 설치 -> 프로젝트 세팅전 아두이노 설치(툴체인 때문)-> 툴체인을 링크를 티 TEsuit 를 로컬
+
+ 프로젝트 만듬 -> 터미널 -> 타겟익스퍼트나 TESuit  링크 건다 -> TEsuit 설치 파란색 사각형 내용을 적어준다. 아두이노 꽂은뒤 연결된 디바이스에서 이름을 찾아서  넣어주면 된다.
+
+-> 리소스를 짜서 다음의 코드를 넣어주면된다.
+
+라고 요약해주셨습니다.
